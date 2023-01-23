@@ -1,60 +1,90 @@
-'''
-Determine if a 9 x 9 Sudoku board is valid. Only the filled cells need to be validated according to the following rules:
+def two_sum_list(nums, target):
+  hashmap = {}
+  two_sums = set()
+  for index, value in enumerate(nums):
+    diff = target - value
+    if diff in hashmap:
+      two_sums.add((index, hashmap[diff]))
+    hashmap[value] = index
+  return two_sums
 
-Each row must contain the digits 1-9 without repetition.
-Each column must contain the digits 1-9 without repetition.
-Each of the nine 3 x 3 sub-boxes of the grid must contain the digits 1-9 without repetition.
-Note:
+print(two_sum_list(nums=[2, 7, 11, 15, 3, 6, 5, 4], target=9))
+{(1, 0), (5, 4), (7, 6)}
+# def replace_string(s):
+#   new_str = ""
+#   n = 1
+#   for c in s:
+#     if n > 1 and n % 3 == 0:
+#       c = '&'
+#     new_str += c
+#     n += 1
+#   return new_str
 
-A Sudoku board (partially filled) could be valid but is not necessarily solvable.
-Only the filled cells need to be validated according to the mentioned rules.
- 
+# print(replace_string('naveen'))
 
-Example 1:
+# def replace_string(s):
+#   new_str = ""
+#   n = 1
+#   for c in s:
+#     if n > 1 and n % 3 == 0:
+#       c = '&'
+#     new_str += c
+#     n += 1
+#   return new_str
 
+# print(replace_string('naveen'))
 
-Input: board = 
-[["5","3",".",".","7",".",".",".","."]
-,["6",".",".","1","9","5",".",".","."]
-,[".","9","8",".",".",".",".","6","."]
-,["8",".",".",".","6",".",".",".","3"]
-,["4",".",".","8",".","3",".",".","1"]
-,["7",".",".",".","2",".",".",".","6"]
-,[".","6",".",".",".",".","2","8","."]
-,[".",".",".","4","1","9",".",".","5"]
-,[".",".",".",".","8",".",".","7","9"]]
-Output: true
-'''
-import collections
+from datetime import datetime
 
+start_time = datetime.now()
+print(f'start_time: {datetime.now()}')
 
-def isValidSudoku(board):
-  cols = collections.defaultdict(set)
-  rows = collections.defaultdict(set)
-  squares = collections.defaultdict(set)
-
-  for r in range(9):
-    for c in range(9):
-      if board[r][c] == ".":
-        continue
-      if (board[r][c] in rows[r] or board[r][c] in cols[c]
-          or board[r][c] in squares[(r // 3, c // 3)]):
-        return False
-      cols[c].add(board[r][c])
-      rows[r].add(board[r][c])
-      squares[(r // 3, c // 3)].add(board[r][c])
-
-  return True
+import functools
 
 
-board = [["5", "3", ".", ".", "7", ".", ".", ".", "."],
-         ["6", ".", ".", "1", "9", "5", ".", ".", "."],
-         [".", "9", "8", ".", ".", ".", ".", "6", "."],
-         ["8", ".", ".", ".", "6", ".", ".", ".", "3"],
-         ["4", ".", ".", "8", ".", "3", ".", ".", "1"],
-         ["7", ".", ".", ".", "2", ".", ".", ".", "6"],
-         [".", "6", ".", ".", ".", ".", "2", "8", "."],
-         [".", ".", ".", "4", "1", "9", ".", ".", "5"],
-         [".", ".", ".", ".", "8", ".", ".", "7", "9"]]
+def debug(func):
+  """Print the function signature and return value"""
 
-print(isValidSudoku(board))
+  @functools.wraps(func)
+  def wrapper_debug(*args, **kwargs):
+    args_repr = [repr(a) for a in args]  #1
+    kwargs_repr = [f"{k}={v!r}" for k, v in kwargs.items()]
+    signature = ", ".join(args_repr + kwargs_repr)
+    print(f"args {args_repr}, kwargs_repr {kwargs_repr}")
+    print(f"Calling {func.__name__}({signature})")
+    value = func(*args, **kwargs)
+    print(f"Calling {func.__name__} returned ({value})")
+    return value
+
+  return wrapper_debug
+
+
+def debug2(func):
+  """Print the function signature and return value"""
+
+  @functools.wraps(func)
+  def wrapper_debug(*args, **kwargs):
+    args_repr = [repr(a) for a in args]  #1
+    kwargs_repr = [f"{k}={v!r}" for k, v in kwargs.items()]
+    signature = ", ".join(args_repr + kwargs_repr)
+    now = datetime.now()
+    print(f"func start time: {now}")
+    print(f"args {args_repr}, kwargs_repr {kwargs_repr}")
+    print(f"Calling {func.__name__}({signature})")
+    value = func(*args, **kwargs)
+    print(f"Calling {func.__name__} returned ({value})")
+    print(f"func total time time: {datetime.now() - now}")
+    return value
+
+  return wrapper_debug
+
+
+@debug2
+def make_greeting(name, age=None):
+  if age is None:
+    return f"Howdy {name}!"
+  else:
+    return f"Whoa {name}! {age} already, you are growing up!"
+
+
+print(make_greeting("Naveen"))
