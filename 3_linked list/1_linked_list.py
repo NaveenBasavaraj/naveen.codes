@@ -67,6 +67,44 @@ class LinkedList:
       self.tail = None
     return temp
 
+  def get_index(self, index):
+    # returns the node at this index
+    if index < 0 or index > self.length:
+      return False
+    temp = self.head
+    for _ in range(index):
+      temp = temp.next
+    return temp
+
+  def insert(self, index, value):
+    # insert given value at given index
+    if index < 0 or index > self.length:
+      # this is checked in get_index
+      # adding again for performance
+      return False
+    if index == 0:
+      return self.prepend(value)
+    if index == self.length:
+      return self.append(value)
+    new_node = Node(value)
+    prev = self.get_index(index - 1)
+    new_node.next = prev.next
+    prev.next = new_node
+    self.length += 1
+    return True
+
+  def remove(self, index):
+    # Remove the node at given index
+    if index < 0 or index > self.length:
+      return None
+    if index == 0:
+      return self.pop_first()
+    if index == self.length - 1:
+      return self.pop()
+    pre = self.get(index - 1)
+    temp = pre.next
+    
+
   def print_list(self, value):
     temp = self.head
     while temp is not None:
