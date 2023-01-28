@@ -1,4 +1,4 @@
-from tree import BinaryTree, Node
+from tree import BinaryTree
 
 
 class TreeTraversal(BinaryTree):

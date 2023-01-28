@@ -101,9 +101,29 @@ class LinkedList:
       return self.pop_first()
     if index == self.length - 1:
       return self.pop()
+    # get previous node
     pre = self.get(index - 1)
+    # temp now becomes next node of previous
     temp = pre.next
-    
+    pre.next = temp.next
+    temp.next = None
+    self.lenght -= 1
+    return temp
+
+  def reverse(self):
+    # first swap head and tail
+    temp = self.head
+    self.head = self.tail
+    self.tail = temp
+    # now take before and after pointer
+    # iterate over list and make temp = after
+    before = None
+    after = temp.next
+    for _ in range(self.length):
+      after = temp.next
+      temp.next = before
+      before = temp
+      temp = after
 
   def print_list(self, value):
     temp = self.head
